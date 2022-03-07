@@ -1,4 +1,8 @@
 # calculator with 4 operations, answer in text
+# author: Denis Matveev
+# ver.2022.03.06
+
+from recognizer import digital_recognizer
 
 # function for num input
 def num_input (txt):
@@ -13,10 +17,7 @@ def num_input (txt):
             print ("Некорректный формат числа, повторите ввод.")
 
 
-
-
 # input first number
-first_num, second_num = 0, 0
 operator = ''
 first_num = num_input("первое")
 
@@ -35,15 +36,28 @@ second_num = num_input("второе")
 # Calculation
 if operator == '+':
     result = first_num + second_num
+elif operator == '-':
+    result = first_num - second_num
+elif operator == '*':
+    result = first_num * second_num
+elif second_num == 0:
+    print ('Деление на ноль!')
 else:
-    if operator == '-':
-        result = first_num - second_num
-    else:
-        if operator == '*':
-            result = first_num * second_num
-        else:
-            result = first_num / second_num
-print("Результат = ", result)
+    result = first_num / second_num
+
+
+# recognize digital result to text
+if second_num != 0 and operator != '/':
+
+    text_result = (digital_recognizer(result))
+
+    # digital output
+    if result == int(result):
+       result = int(result)
+    print("Результат = ", result)
+
+    #text output
+    print("Результат = ", text_result)
 
 
 
