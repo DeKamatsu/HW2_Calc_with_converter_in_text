@@ -4,6 +4,7 @@
 
 from recognizer import digital_recognizer
 
+#+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 # function for num input
 def num_input (txt):
     num_is_digit = False
@@ -16,7 +17,7 @@ def num_input (txt):
         except ValueError:
             print ("Некорректный формат числа, повторите ввод.")
 
-
+#+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 # input first number
 operator = ''
 first_num = num_input("первое")
@@ -33,6 +34,7 @@ while is_operator_ok is False:
 # input second number
 second_num = num_input("второе")
 
+
 # Calculation
 if operator == '+':
     result = first_num + second_num
@@ -47,17 +49,19 @@ else:
 
 
 # recognize digital result to text
-if second_num != 0 and operator != '/':
+if second_num != 0 or operator != '/':
 
-    text_result = (digital_recognizer(result))
+    # output
+    if result >= 10000000000000000:
+        print("Результат в цифре = ", result)
+        print('Слишком большое число для перевода в текст')
+    else:
+        text_result = (digital_recognizer(result))
 
-    # digital output
-    if result == int(result):
-       result = int(result)
-    print("Результат = ", result)
-
-    #text output
-    print("Результат = ", text_result)
+        if result == int(result):
+            result = int(result)
+        print("Результат в цифре = ", result)
+        print("Результат в тексте = ", text_result)
 
 
 
