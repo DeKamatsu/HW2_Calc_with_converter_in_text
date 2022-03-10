@@ -139,7 +139,7 @@ def lvl_counter(num_in_string):
         levels = round(len(num_in_string) / 3)
     return levels
 
-# split num in string to groups by 3 digits of each level and safe it to list 'nums_list' ++++++++++++++++++++++++++++++
+# split num in string to groups by 3 digits of each level and safe it to list 'nums_list' like ['1', '627', '020', ...]+
 
 
 def split_num_in_string_to_trios(num_in_string):
@@ -160,7 +160,7 @@ def split_num_in_string_to_trios(num_in_string):
 
 def convert_trio_not_last_lvl(trio):
     trio_in_text = ''
-
+    # not working yet
     return trio_in_text
 # function converts to text first part of num (before dot) +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
@@ -290,7 +290,3 @@ def num_to_text_converter(num):
         text += convert_digits_after_dot(num_in_string[dot_position + 1:]) \
             + ' (приведено с округлением до 4 заков после запятой)'
     return text
-    
-
-
-
