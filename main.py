@@ -4,9 +4,10 @@
 
 from num_converter import num_to_text_converter
 
-#+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-# function for num input
-def num_input (txt):
+# function for num input +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+
+def num_input(txt):
     num_is_digit = False
     while num_is_digit is False:
         try:
@@ -15,12 +16,13 @@ def num_input (txt):
             num_is_digit = True
             return num
         except ValueError:
-            print ("Некорректный формат числа, повторите ввод.")
+            print("Некорректный формат числа, повторите ввод.")
 
-#+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-# input first number
+# main block +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+
 operator = ''
-first_num = num_input("первое")
+first_num = num_input("первое")  # input first number
 
 # input operator
 is_operator_ok = False
@@ -31,8 +33,7 @@ while is_operator_ok is False:
     else:
         print("Некорректный оператор. Допустимы '+', '-', '*', '/'. Повторите ввод.")
 
-# input second number
-second_num = num_input("второе")
+second_num = num_input("второе")  # input second number
 
 # Calculation
 if operator == '+':
@@ -42,20 +43,18 @@ elif operator == '-':
 elif operator == '*':
     result = first_num * second_num
 elif second_num == 0:
-    print ('Деление на ноль!')
+    print('Деление на ноль!')
 else:
     result = first_num / second_num
 
 # output result
 if second_num != 0 or operator != '/':
-
-    # output
+    result_to_convert = result
+    if result == int(result):
+        result = int(result)
     if result >= 10000000000000000:
         print("Результат в цифре = ", result)
-        print ('Слишком большое число для перевода в текст')
+        print('Слишком большое число для перевода в текст')
     else:
-
-        if result == int(result):
-            result = int(result)
         print("Результат в цифре = ", result)
         print("Результат в тексте = ", num_to_text_converter(result_to_convert))

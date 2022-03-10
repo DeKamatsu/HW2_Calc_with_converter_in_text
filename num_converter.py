@@ -128,164 +128,167 @@ ending_after_dot = {
     '8': 'ых',
     '9': 'ых',
 }
-#+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-# function converts in text first part of result (before dot)
+
+# function counts levels of num ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+
+def lvl_counter(num_in_string):
+    if len(num_in_string) / 3 > round(len(num_in_string) / 3):
+        levels = round(len(num_in_string) / 3) + 1
+    else:
+        levels = round(len(num_in_string) / 3)
+    return levels
+
+# split num in string to groups by 3 digits of each level and safe it to list 'nums_list' ++++++++++++++++++++++++++++++
+
+
+def split_num_in_string_to_trios(num_in_string):
+    level = lvl_counter(num_in_string)
+    trios_list = [''] * level
+    no = 3
+    for digit in range(len(num_in_string)):
+        trios_list[level - 1] = num_in_string[len(num_in_string) - digit - 1] \
+                                + trios_list[level - 1]
+        no -= 1
+        if no == 0:
+            no = 3
+            level -= 1
+    return trios_list
+
+# function converts three digits of not last level in to text ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+
+def convert_trio_not_last_lvl(trio):
+    trio_in_text = ''
+
+    return trio_in_text
+# function converts to text first part of num (before dot) +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 
 def convert_digits_before_dot(str_before_dot):
-    text_result_before_dot = ''
+    text_before_dot = ''
     if str_before_dot == '0':
-        text_result_before_dot += 'ноль '
+        text_before_dot += ' ноль '
     else:
-        # checking of number size
-        if len(str_before_dot) / 3 > round(len(str_before_dot) / 3):
-            size_of_num_list = round(len(str_before_dot) / 3) + 1
-        else:
-            size_of_num_list = round(len(str_before_dot) / 3)
-
-        if size_of_num_list > 16:
+        size_of_num_list = lvl_counter(str_before_dot)
+        if size_of_num_list > 16:  # checking of number size
             return 'Слишком большое число для интерпретации!'
         else:
-            # split result in string in to list 'nums_list' of groups of 3 digits by levels
-            nums_list = [''] * size_of_num_list
-
-            level = size_of_num_list
-            no = 3
-            for digit in range(len(str_before_dot)):
-                nums_list[level - 1] = str_before_dot[len(str_before_dot) - digit - 1] \
-                                       + nums_list[level - 1]
-                no -= 1
-                if no == 0:
-                    no = 3
-                    level -= 1
+            # split num to groups by 3 digits of each level and safe it to list 'nums_list'
+            trios_list = split_num_in_string_to_trios(str_before_dot)
 
             # convert every three digits in list by level before dot in text
             for level in range(size_of_num_list):
 
                 # copy by tree digits of each level in trio
                 trio = ['0', '0', '0', ]
-                for digit in range(len(nums_list[level])):
-                    trio[2 - digit] = nums_list[level][len(nums_list[level]) - digit - 1]
+                for digit in range(len(trios_list[level])):
+                    trio[2 - digit] = trios_list[level][len(trios_list[level]) - digit - 1]
 
                 # convert any digit it trio to text
                 if trio[0] != '0':
-                    text_result_before_dot += ' ' + digit_a[trio[0]]
+                    text_before_dot += ' ' + digit_a[trio[0]]
                 if trio[1] == '1' and trio[2] != '0':
-                    text_result_before_dot += ' ' + digit_11_19[trio[2]]
+                    text_before_dot += ' ' + digit_11_19[trio[2]]
                 elif trio[1] != '0':
-                    text_result_before_dot += ' ' + digit_b[trio[1]]
+                    text_before_dot += ' ' + digit_b[trio[1]]
                 if trio[1] != '1' and trio[2] != '0':
                     if size_of_num_list - level == 2 and trio[2] == '1':
-                        text_result_before_dot += ' одна'
+                        text_before_dot += ' одна'
                     elif size_of_num_list - level == 2 and trio[2] == '2':
-                        text_result_before_dot += ' две'
+                        text_before_dot += ' две'
                     else:
-                        text_result_before_dot += ' ' + digit_c[trio[2]]
+                        text_before_dot += ' ' + digit_c[trio[2]]
 
                 # add name and ending of every level of num
                 if trio != ['0', '0', '0']:
-                    text_result_before_dot += ' ' + levels_before_dot[size_of_num_list - level]
+                    text_before_dot += ' ' + levels_before_dot[size_of_num_list - level]
 
                     if size_of_num_list - level == 2 and trio[1] != '1':
-                         text_result_before_dot += ending_for_thousand[trio[2]]
+                         text_before_dot += ending_for_thousand[trio[2]]
                     if trio[1] != '1' and size_of_num_list - level > 2:
-                            text_result_before_dot += ending_for_other_levels[trio[2]]
+                            text_before_dot += ending_for_other_levels[trio[2]]
                     elif trio[1] == '1' and size_of_num_list - level > 2:
-                            text_result_before_dot += 'ов'
+                            text_before_dot += 'ов'
 
-    return (text_result_before_dot)
+    return text_before_dot
 
-#+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-# function converts in text second part of result (after dot)
+# function converts to text second part of num (after dot) +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 
 def convert_digits_after_dot(str_after_dot):
-    str_after_dot = str_after_dot[:4]
-    text_result_after_dot = ''
+    str_after_dot = str_after_dot[:4]  # round as you wish
+    text_after_dot = ''
 
-    if len(str_after_dot) / 3 > round(len(str_after_dot) / 3):
-        size_of_num_list = round(len(str_after_dot) / 3) + 1
-    else:
-        size_of_num_list = round(len(str_after_dot) / 3)
+    size_of_num_list = lvl_counter(str_after_dot)
 
     # split result in string in to list 'nums_list' of groups of 3 digits by levels
-    nums_list = [''] * size_of_num_list
-    level = size_of_num_list
-    no = 3
-    for digit in range(len(str_after_dot)):
-        nums_list[level - 1] = str_after_dot[len(str_after_dot) - digit - 1] \
-                               + nums_list[level - 1]
-        no -= 1
-        if no == 0:
-            no = 3
-            level -= 1
+    trios_list = split_num_in_string_to_trios(str_after_dot)
 
     # convert every three digits in list by level after dot in text
     for level in range(size_of_num_list):
 
         # copy by tree digits of each level in trio
         trio = ['0', '0', '0', ]
-        for digit in range(len(nums_list[level])):
-            trio[2 - digit] = nums_list[level][len(nums_list[level]) - digit - 1]
+        for digit in range(len(trios_list[level])):
+            trio[2 - digit] = trios_list[level][len(trios_list[level]) - digit - 1]
 
         # convert any digit it trio to text
         if trio[0] != '0':
-            text_result_after_dot += ' ' + digit_a[trio[0]]
+            text_after_dot += ' ' + digit_a[trio[0]]
         if trio[1] == '1' and trio[2] != '0':
-            text_result_after_dot += ' ' + digit_11_19[trio[2]]
+            text_after_dot += ' ' + digit_11_19[trio[2]]
         elif trio[1] != '0':
-            text_result_after_dot += ' ' + digit_b[trio[1]]
+            text_after_dot += ' ' + digit_b[trio[1]]
         if trio[1] != '1' and trio[2] != '0':
             if size_of_num_list - level == 2 and trio[2] == '1':
-                text_result_after_dot += ' одна'
+                text_after_dot += ' одна'
             elif size_of_num_list - level == 2 and trio[2] == '2':
-                text_result_after_dot += ' две'
+                text_after_dot += ' две'
             else:
-                text_result_after_dot += ' ' + digit_c_after_dot[trio[2]]
+                text_after_dot += ' ' + digit_c_after_dot[trio[2]]
 
         # add name and ending of every except last level of num
         if trio != ['0', '0', '0']:
-            text_result_after_dot += ' ' + levels_before_dot[size_of_num_list - level]
+            text_after_dot += ' ' + levels_before_dot[size_of_num_list - level]
 
             if size_of_num_list - level == 2 and trio[1] != '1':
-                text_result_after_dot += ending_for_thousand[trio[2]]
+                text_after_dot += ending_for_thousand[trio[2]]
             if trio[1] != '1' and size_of_num_list - level > 2:
-                text_result_after_dot += ending_for_other_levels[trio[2]]
+                text_after_dot += ending_for_other_levels[trio[2]]
             elif trio[1] == '1' and size_of_num_list - level > 2:
-                text_result_after_dot += 'ов'
+                text_after_dot += 'ов'
 
             # add ending for last level digits
             if size_of_num_list - level == 1:
                 if trio[1] != '1':
-                    text_result_after_dot += levels_after_dot[len(str_after_dot)] \
-                                             + ending_after_dot[trio[2]]
+                    text_after_dot += levels_after_dot[len(str_after_dot)] \
+                                      + ending_after_dot[trio[2]]
                 else:
-                    text_result_after_dot += levels_after_dot[len(str_after_dot)] + 'ых'
+                    text_after_dot += levels_after_dot[len(str_after_dot)] + 'ых'
 
-    return text_result_after_dot
+    return text_after_dot
 
-#+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-# main function to recognize num in text
+# main function to convert num to text +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 
-def num_to_text_converter (num):
+def num_to_text_converter(num):
+    text = ''
     if num < 0:
-        num = -num
-        text = 'минус '
-    num_in_string = str(num)
+        text = 'минус'
+    num_in_string = str(abs(num))
 
     # no checking for absent dot needed because num is always float type
     dot_position = num_in_string.find('.')
 
     # return first part of num (before dot) in text
-    text = convert_digits_before_dot(num_in_string[:dot_position])
+    text += convert_digits_before_dot(num_in_string[:dot_position])
 
     # if there is a second part of num (after dot) return it in text
     if num != int(num):
         text += 'и'
         text += convert_digits_after_dot(num_in_string[dot_position + 1:]) \
-                + ' (привдено с округлением до 4 заков после запятой)'
-
+            + ' (приведено с округлением до 4 заков после запятой)'
     return text
     
 
