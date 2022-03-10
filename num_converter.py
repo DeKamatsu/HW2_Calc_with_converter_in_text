@@ -1,6 +1,6 @@
 # converter of num to text
 # author: Denis Matveev
-# ver.2022.03.06
+# ver.2022.03.09
 
 # dictionaries for first part of num (before dot)
 levels_before_dot = {
@@ -130,7 +130,9 @@ ending_after_dot = {
 }
 #+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 # function converts in text first part of result (before dot)
-def convert_digit_before_dot(str_before_dot):
+
+
+def convert_digits_before_dot(str_before_dot):
     text_result_before_dot = ''
     if str_before_dot == '0':
         text_result_before_dot += 'ноль '
@@ -142,7 +144,7 @@ def convert_digit_before_dot(str_before_dot):
             size_of_num_list = round(len(str_before_dot) / 3)
 
         if size_of_num_list > 16:
-            return('Слишком большое число для интерпретации!')
+            return 'Слишком большое число для интерпретации!'
         else:
             # split result in string in to list 'nums_list' of groups of 3 digits by levels
             nums_list = [''] * size_of_num_list
@@ -195,7 +197,9 @@ def convert_digit_before_dot(str_before_dot):
 
 #+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 # function converts in text second part of result (after dot)
-def convert_digit_after_dot(str_after_dot):
+
+
+def convert_digits_after_dot(str_after_dot):
     str_after_dot = str_after_dot[:4]
     text_result_after_dot = ''
 
@@ -258,28 +262,31 @@ def convert_digit_after_dot(str_after_dot):
                 else:
                     text_result_after_dot += levels_after_dot[len(str_after_dot)] + 'ых'
 
-    return (text_result_after_dot)
+    return text_result_after_dot
 
 #+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 # main function to recognize num in text
-def digital_recognizer (digital_result):
-    result_in_string = str(digital_result)
-    length = len(result_in_string)
-
-    # no checking for absent dot because result is always float type
-    dot_position = result_in_string.find('.')
-
-    # return first part of result (before dot) in text
-    text_result = convert_digit_before_dot(result_in_string[:dot_position])
-
-    # if there is a second part of result (after dot) return it in text
-    if digital_result != int(digital_result):
-        text_result += 'и'
-        text_result += convert_digit_after_dot(result_in_string[dot_position + 1:]) \
-                       + (' (округление до 4 заков после запятой)')
 
 
-    return(text_result)
+def num_to_text_converter (num):
+    if num < 0:
+        num = -num
+        text = 'минус '
+    num_in_string = str(num)
+
+    # no checking for absent dot needed because num is always float type
+    dot_position = num_in_string.find('.')
+
+    # return first part of num (before dot) in text
+    text = convert_digits_before_dot(num_in_string[:dot_position])
+
+    # if there is a second part of num (after dot) return it in text
+    if num != int(num):
+        text += 'и'
+        text += convert_digits_after_dot(num_in_string[dot_position + 1:]) \
+                + ' (привдено с округлением до 4 заков после запятой)'
+
+    return text
     
 
 

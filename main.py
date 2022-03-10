@@ -2,7 +2,7 @@
 # author: Denis Matveev
 # ver.2022.03.06
 
-from recognizer import digital_recognizer
+from num_converter import num_to_text_converter
 
 #+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 # function for num input
@@ -25,7 +25,7 @@ first_num = num_input("первое")
 # input operator
 is_operator_ok = False
 while is_operator_ok is False:
-    operator = input("Введите операцию:\n")
+    operator = input("Введите операцию (доступны: +, -, *, /):\n")
     if operator == '+' or operator == '-' or operator == '*' or operator == '/':
         is_operator_ok = True
     else:
@@ -33,7 +33,6 @@ while is_operator_ok is False:
 
 # input second number
 second_num = num_input("второе")
-
 
 # Calculation
 if operator == '+':
@@ -47,21 +46,16 @@ elif second_num == 0:
 else:
     result = first_num / second_num
 
-
-# recognize digital result to text
+# output result
 if second_num != 0 or operator != '/':
 
     # output
     if result >= 10000000000000000:
         print("Результат в цифре = ", result)
-        print('Слишком большое число для перевода в текст')
+        print ('Слишком большое число для перевода в текст')
     else:
-        text_result = (digital_recognizer(result))
 
         if result == int(result):
             result = int(result)
         print("Результат в цифре = ", result)
-        print("Результат в тексте = ", text_result)
-
-
-
+        print("Результат в тексте = ", num_to_text_converter(result_to_convert))
