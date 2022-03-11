@@ -6,6 +6,7 @@ from num_converter import num_to_text_converter
 
 # function for stop checking +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
+
 def stop_checking(txt):
     if txt == 'стоп' or txt == 'stop' or txt == 'Стоп' or txt == 'Stop' or txt == 'СТОП' or txt == 'STOP':
         return True
@@ -18,10 +19,10 @@ def num_input(txt):
     num_is_digit = False
     while num_is_digit is False:
         try:
-            print(f"Введите {txt} число:")
-            num = input()
+            request = f"Введите {txt} число: "
+            num = input(request)
             if stop_checking(num):
-                return num
+                return False
             num = float(num)
             num_is_digit = True
             return num
@@ -35,18 +36,17 @@ def num_input(txt):
 count = 0
 while True:
     operator = ''
+    result = 0.0
     stop = False
 
     first_num = num_input("первое")  # input first number
-    if type(first_num) == str:
-        stop = True
+    if first_num is False:
+        break
 
     # input operator
-    if stop:
-        break
     is_operator_ok = False
     while is_operator_ok is False:
-        operator = input("Введите операцию (доступны: +, -, *, /):\n")
+        operator = input("Введите операцию (доступны: +, -, *, /): ")
         if stop_checking(operator):
             stop = True
             break
@@ -54,12 +54,11 @@ while True:
             is_operator_ok = True
         else:
             print("Некорректный оператор. Допустимы '+', '-', '*', '/'. Повторите ввод.")
-
     if stop:
         break
+
     second_num = num_input("второе")  # input second number
-    if type(second_num) == str:
-        stop = True
+    if second_num is False:
         break
 
     # Calculation
@@ -85,6 +84,6 @@ while True:
         else:
             print("Результат в цифре = ", result)
             print("Результат в тексте = ", num_to_text_converter(result_to_convert))
-
+            print(f"{'':-<50}")
     count += 1
 print(f"Вычисления прерваны. Выполнено {count} рассчетов.")

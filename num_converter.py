@@ -287,6 +287,7 @@ def num_to_text_converter(num):
     # if there is a second part of num (after dot) return it in text
     if num != int(num):
         text += 'и'
-        text += convert_digits_after_dot(num_in_string[dot_position + 1:]) \
-            + ' (приведено с округлением до 4 заков после запятой)'
+        round_text = " (приведено с округлением до 4 заков после запятой)" \
+            if len(num_in_string[num_in_string.find('.'):]) > 5 else ''
+        text += convert_digits_after_dot(num_in_string[dot_position + 1:]) + round_text
     return text
