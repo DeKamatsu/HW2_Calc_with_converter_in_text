@@ -139,7 +139,7 @@ def lvl_counter(num_in_string):
         levels = round(len(num_in_string) / 3)
     return levels
 
-# split num in string to groups by 3 digits of each level and safe it to list 'nums_list' like ['1', '627', '020', ...]+
+# split num in string to groups by 3 digits of each level and safe it to list 'nums_list' like ['001', '627', ...]++++++
 
 
 def split_num_in_string_to_trios(num_in_string):
@@ -147,68 +147,74 @@ def split_num_in_string_to_trios(num_in_string):
     trios_list = [''] * level
     no = 3
     for digit in range(len(num_in_string)):
-        trios_list[level - 1] = num_in_string[len(num_in_string) - digit - 1] \
-                                + trios_list[level - 1]
+        trios_list[level - 1] = num_in_string[len(num_in_string) - digit - 1] + trios_list[level - 1]
         no -= 1
         if no == 0:
             no = 3
             level -= 1
+    absent_digit = 3 - len(trios_list[0])  # count quantity of digits of highest level of num^ 1, 2 or 3 +++++++++++++++
+    trios_list[0] = '0' * absent_digit + trios_list[0]  # add 0 to replace abcent digits on highest level of num +++++++
     return trios_list
 
 # function converts three digits of not last level in to text ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 
-def convert_trio_not_last_lvl(trio):
-    trio_in_text = ''
-    # not working yet
+def convert_3_digits_not_units_lvl_to_text(trio, list_size, level):
+
+    for digit in range(len(trio)):
+        if trio[1] != '1' and trio[2] != '0':
+            if list_size - level == 2 and trio[2] == '1':  # special case for thousands's level
+                trio_in_text = ' одна'
+            elif list_size - level == 2 and trio[2] == '2':
+                trio_in_text = ' две'
+            else:
+                trio_in_text = digit_c[trio[2]] + ' ' + trio_in_text
+        # convert tens it trio to text
+        if trio[1] == '1' and trio[2] != '0':
+            trio_in_text = digit_11_19[trio[2]] + ' ' + trio_in_text
+        elif trio[1] != '0':
+            trio_in_text = digit_b[trio[1]] + ' ' + trio_in_text
+
+        # convert hundreds it trio to text
+        if trio[0] != '0':
+            trio_in_text = digit_a[trio[0]] + ' ' + trio_in_text
     return trio_in_text
+
 # function converts to text first part of num (before dot) +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 
 def convert_digits_before_dot(str_before_dot):
     text_before_dot = ''
-    if str_before_dot == '0':
+
+    if str_before_dot == '0':  # checking for zero value
         text_before_dot += ' ноль '
-    else:
-        size_of_num_list = lvl_counter(str_before_dot)
-        if size_of_num_list > 16:  # checking of number size
+
+    else:  # checking of number size
+        quantity_of_levels = lvl_counter(str_before_dot)
+        if quantity_of_levels > 16:
             return 'Слишком большое число для интерпретации!'
+
         else:
             # split num to groups by 3 digits of each level and safe it to list 'nums_list'
             trios_list = split_num_in_string_to_trios(str_before_dot)
 
-            # convert every three digits in list by level before dot in text
-            for level in range(size_of_num_list):
+            # --convert every three digits of each level of num before dot in text & add level's name with endings
+            for level in range(quantity_of_levels):
 
-                # copy by tree digits of each level in trio
-                trio = ['0', '0', '0', ]
-                for digit in range(len(trios_list[level])):
-                    trio[2 - digit] = trios_list[level][len(trios_list[level]) - digit - 1]
+                # convert every three digits of each level of num before dot in text
+                text_before_dot += convert_3_digits_not_units_lvl_to_text(trios_list[level]
+                                                                          , quantity_of_levels, level)
 
-                # convert any digit it trio to text
-                if trio[0] != '0':
-                    text_before_dot += ' ' + digit_a[trio[0]]
-                if trio[1] == '1' and trio[2] != '0':
-                    text_before_dot += ' ' + digit_11_19[trio[2]]
-                elif trio[1] != '0':
-                    text_before_dot += ' ' + digit_b[trio[1]]
-                if trio[1] != '1' and trio[2] != '0':
-                    if size_of_num_list - level == 2 and trio[2] == '1':
-                        text_before_dot += ' одна'
-                    elif size_of_num_list - level == 2 and trio[2] == '2':
-                        text_before_dot += ' две'
-                    else:
-                        text_before_dot += ' ' + digit_c[trio[2]]
 
                 # add name and ending of every level of num
                 if trio != ['0', '0', '0']:
-                    text_before_dot += ' ' + levels_before_dot[size_of_num_list - level]
+                    text_before_dot += ' ' + levels_before_dot[quantity_of_levels - level]
 
-                    if size_of_num_list - level == 2 and trio[1] != '1':
+                    if quantity_of_levels - level == 2 and trio[1] != '1':
                          text_before_dot += ending_for_thousand[trio[2]]
-                    if trio[1] != '1' and size_of_num_list - level > 2:
+                    if trio[1] != '1' and quantity_of_levels - level > 2:
                             text_before_dot += ending_for_other_levels[trio[2]]
-                    elif trio[1] == '1' and size_of_num_list - level > 2:
+                    elif trio[1] == '1' and quantity_of_levels - level > 2:
                             text_before_dot += 'ов'
 
     return text_before_dot
