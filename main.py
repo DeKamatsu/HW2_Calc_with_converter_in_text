@@ -85,4 +85,4 @@ while True:
             print("Результат в тексте = ", num_to_text_converter(result_to_convert))
             print(f"{'':-<50}")
     count += 1
-print(f"Вычисления прерваны. Выполнено {count} рассчетов.")
+print(f"Вычисления прерваны. Выполнено {count} расчетов.")
