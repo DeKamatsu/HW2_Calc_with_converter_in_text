@@ -69,6 +69,7 @@ while True:
         result = first_num * second_num
     elif second_num == 0:
         print('Деление на ноль!')
+        print(f"{'':-<50}")
     else:
         result = first_num / second_num
 
@@ -80,6 +81,7 @@ while True:
         if result >= 10000000000000000:
             print("Результат в цифре = ", result)
             print('Слишком большое число для перевода в текст')
+            print(f"{'':-<50}")
         else:
             print("Результат в цифре = ", result)
             print("Результат в тексте = ", num_to_text_converter(result_to_convert))
