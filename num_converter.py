@@ -1,6 +1,6 @@
 # converter of num to text
 # author: Denis Matveev
-# ver.2022.03.09
+# ver.2022.03.13
 
 # dictionaries for first part of num (before dot)
 levels_before_dot = {

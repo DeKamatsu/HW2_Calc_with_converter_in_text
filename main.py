@@ -1,6 +1,6 @@
 # calculator with 4 operations, answer in text
 # author: Denis Matveev
-# ver.2022.03.06
+# ver.2022.03.13
 
 from num_converter import num_to_text_converter
 
