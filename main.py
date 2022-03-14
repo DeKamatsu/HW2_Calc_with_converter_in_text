@@ -8,7 +8,7 @@ from num_converter import num_to_text_converter
 
 
 def stop_checking(txt):
-    if txt == 'стоп' or txt == 'stop' or txt == 'Стоп' or txt == 'Stop' or txt == 'СТОП' or txt == 'STOP':
+    if txt.lower() == 'стоп' or txt.lower() == 'stop':
         return True
     return False
 
@@ -79,12 +79,12 @@ while True:
         if result == int(result):
             result = int(result)
         if result >= 10000000000000000:
-            print("Результат в цифре = ", result)
+            print("Результат в цифре =", result)
             print('Слишком большое число для перевода в текст')
             print(f"{'':-<50}")
         else:
-            print("Результат в цифре = ", result)
-            print("Результат в тексте = ", num_to_text_converter(result_to_convert))
+            print("Результат в цифре =", result)
+            print("Результат в тексте =", num_to_text_converter(result_to_convert))
             print(f"{'':-<50}")
     count += 1
 print(f"Вычисления прерваны. Выполнено {count} расчетов.")

@@ -149,7 +149,7 @@ def lvl_counter(num_in_string):
         levels = round(len(num_in_string) / 3)
     return levels
 
-# split num in string to groups by 3 digits of each level and safe it to list 'nums_list' like ['001', '627', ...]++++++
+# split num in string to groups by 3 digits of each level and safe it to list 'nums_list' like ['001', '627', ...]
 
 
 def split_num_in_string_to_trios(num_in_string):
@@ -162,8 +162,8 @@ def split_num_in_string_to_trios(num_in_string):
         if no == 0:
             no = 3
             level -= 1
-    absent_digit = 3 - len(trios_in_list[0])  # count quantity of digits of highest level of num^ 1, 2 or 3 ++++++++++++
-    trios_in_list[0] = '0' * absent_digit + trios_in_list[0]  # add 0 to replace absent digits on highest level of num +
+    absent_digit = 3 - len(trios_in_list[0])  # count quantity of digits of highest level of num: 1, 2 or 3
+    trios_in_list[0] = '0' * absent_digit + trios_in_list[0]  # add 0 to replace absent digits on highest level of num
     return trios_in_list
 
 # function converts three digits of each level in to text ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -180,7 +180,7 @@ def convert_3_digits_to_text(trio, list_size, level, is_firs_part_of_num, intege
         if trio[2] != '0' and trio[1] != '1':
             if list_size - level > 2 or (list_size - level == 1 and is_firs_part_of_num and integer):  # 1) typical case
                 trio_in_text = digit_c_male[trio[2]] + ' ' + trio_in_text
-            elif list_size - level == 1 and is_firs_part_of_num and integer is False:  # 2) before dot in float num ++++
+            elif list_size - level == 1 and is_firs_part_of_num and integer is False:  # 2) before dot in float num
                 trio_in_text = digit_c_float_before_dot[trio[2]] + ' ' + trio_in_text
             elif list_size - level == 2 or is_firs_part_of_num is False:   # 3) thousands OR unit after dot in float num
                 trio_in_text = digit_c_female[trio[2]] + ' ' + trio_in_text
@@ -295,16 +295,12 @@ def num_to_text_converter(num):
         text = 'минус '
     num_round = round(num, 4)  # round as you wish
     no_round = num == num_round  # check if num is rounded
-    num_in_string = str(abs(num_round))
-    dot_position = num_in_string.find('.')  # no checking for absent dot needed because num is always float type
-    # check if rounded num is integer
-    zero_after_dot = len(num_in_string[dot_position + 1:]) < 2 and num_in_string[dot_position + 1:] == '0'
-
-    text += convert_digits_before_dot(str_before_dot=num_in_string[:dot_position]
-                                      , integer=zero_after_dot)  # return 1-st part of num (before dot) in text
-
-    if zero_after_dot is False:  # if there is a 2-nd part of num (after dot) return it in text
-        text += convert_digits_after_dot(num_in_string[dot_position + 1:])
+    num_before_dot, dot, num_after_dot = str(abs(num_round)).partition('.')  # this num is always float type (with dot)
+    is_zero_after_dot = len(num_after_dot) < 2 and num_after_dot == '0'  # check if rounded num is integer
+    text += convert_digits_before_dot(str_before_dot=num_before_dot
+                                      , integer=is_zero_after_dot)  # return 1-st part of num (before dot) in text
+    if is_zero_after_dot is False:  # if there is a 2-nd part of num (after dot) return it in text
+        text += convert_digits_after_dot(num_after_dot)
     if no_round is False:
         text += "(приведено с округлением до 4 заков после запятой)"
     return text
